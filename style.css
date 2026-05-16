@@ -1,0 +1,229 @@
+/* Configurações Gerais - Paleta Preta e Vermelha da Faculdade */
+:root {
+    --faculdade-preto: #1a1a1a;
+    --faculdade-preto-suave: #2d2d2d;
+    --faculdade-vermelho: #cc0000;
+    --faculdade-vermelho-hover: #a30000;
+    --cinza-fundo: #f8f9fa;
+    --texto-escuro: #212529;
+    
+    /* Cores de Mapeamento */
+    --risco-verde: #2ecc71;
+    --risco-amarelo: #f1c40f;
+    --risco-vermelho: #e74c3c;
+    --ubs-azul: #3498db;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--cinza-fundo);
+    color: var(--texto-escuro);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #dee2e6;
+    margin: 30px 0;
+}
+
+/* Cabeçalho com a logo da Universidade e tema escuro/vermelho */
+.main-header {
+    background: linear-gradient(135deg, var(--faculdade-preto) 60%, var(--faculdade-preto-suave) 100%);
+    color: white;
+    padding: 30px 20px;
+    border-bottom: 5px solid var(--faculdade-vermelho);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.university-logo {
+    max-height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header-text h1 {
+    font-size: 2.2rem;
+    margin: 0 0 5px 0;
+}
+
+.header-text p {
+    font-size: 1.1rem;
+    margin: 0 0 15px 0;
+    color: #ccc;
+}
+
+.academic-badge {
+    background-color: var(--faculdade-vermelho);
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Seções de Conteúdo */
+.intro-section h2, .map-section h2 {
+    color: var(--faculdade-preto);
+    border-left: 4px solid var(--faculdade-vermelho);
+    padding-left: 10px;
+}
+
+.instructions {
+    background-color: #fff5f5;
+    padding: 12px 15px;
+    border-left: 5px solid var(--faculdade-vermelho);
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+/* Estrutura do Mapa e Controles */
+.map-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+#map {
+    flex: 2;
+    min-width: 300px;
+    height: 550px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.map-controls {
+    flex: 1;
+    min-width: 280px;
+    background: white;
+    padding: 24px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.map-controls h3 {
+    margin-top: 0;
+    color: var(--faculdade-preto);
+    border-bottom: 2px solid var(--cinza-fundo);
+    padding-bottom: 8px;
+}
+
+/* Legenda */
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.box {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.verde { background-color: var(--risco-verde); border: 1px solid #27ae60; }
+.amarelo { background-color: var(--risco-amarelo); border: 1px solid #f39c12; }
+.vermelho { background-color: var(--risco-vermelho); border: 1px solid #c0392b; }
+.azul { background-color: var(--ubs-azul); border: 1px solid #2980b9; }
+
+/* Formulário de Cadastro */
+.hidden {
+    display: none;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+input[type="text"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--faculdade-vermelho);
+}
+
+button {
+    width: 100%;
+    background-color: var(--faculdade-vermelho);
+    color: white;
+    border: none;
+    padding: 12px;
+    margin-top: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: var(--faculdade-vermelho-hover);
+}
+
+.small-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Estilização interna do Pop-up do Mapa */
+.btn-remover {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-remover:hover {
+    background-color: #bd2130;
+}
+
+/* Rodapé */
+.main-footer {
+    text-align: center;
+    padding: 24px;
+    background-color: var(--faculdade-preto);
+    color: #aaa;
+    margin-top: 60px;
+    font-size: 0.85rem;
+    border-top: 3px solid var(--faculdade-vermelho);
+}
