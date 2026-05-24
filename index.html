@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Territorialização de Enfermagem - Nova Prata do Iguaçu</title>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
-    
+
     <style>
-        /* Estilo para garantir que o ícone do postinho fique no tamanho certo no mapa */
-        .icone-postinho-html {
+        .icone-postinho-html,
+        .icone-academia-html,
+        .icone-igreja-html,
+        .icone-creche-html,
+        .icone-escola-html,
+        .icone-cemiterio-html {
             width: 40px !important;
             height: 40px !important;
             object-fit: contain;
@@ -18,63 +23,245 @@
 </head>
 <body>
 
-    <img id="img-postinho-index" src="img/postinho.png" style="display: none;">
+    <img id="img-postinho-index"
+        src="img/postinho.png"
+        style="display:none;">
+
+    <img id="img-academia-index"
+        src="img/ACADEMIA TERCEIRA IDADE.png"
+        style="display:none;">
+
+    <img id="img-igreja-index"
+        src="img/igreja.png"
+        style="display:none;">
+
+    <img id="img-creche-index"
+        src="img/Creche.png"
+        style="display:none;">
+
+    <img id="img-escola-index"
+        src="img/Escola.png"
+        style="display:none;">
+
+    <img id="img-cemiterio-index"
+        src="img/Cemitério.png"
+        style="display:none;">
 
     <header class="main-header">
+
         <div class="header-container">
-            <img src="img/logouni2.png" alt="Logo Universidade" class="university-logo">
+
+            <img
+                src="img/logouni2.png"
+                alt="Logo Universidade"
+                class="university-logo"
+            >
+
             <div class="header-text">
-                <h1>Territorialização de Enfermagem</h1>
-                <p>Análise de Estratificação de Risco Familiar</p>
-                <span class="academic-badge">Trabalho Acadêmico de Graduação</span>
+
+                <h1>
+                    Territorialização de Enfermagem
+                </h1>
+
+                <p>
+                    Análise de Estratificação
+                    de Risco Familiar
+                </p>
+
+                <span class="academic-badge">
+                    Trabalho Acadêmico de Graduação
+                </span>
+
             </div>
         </div>
     </header>
 
     <main class="container">
-        
+
         <section class="intro-section">
+
             <h2>Dados da Territorialização</h2>
-            <p><strong>Localidade:</strong> Rua João Emílio Ritter, Nova Prata do Iguaçu - PR</p>
-            <p><strong>Objetivo:</strong> Mapear e estratificar as famílias por critérios de vulnerabilidade e risco à saúde, permitindo um planejamento eficiente das ações da Unidade Básica de Saúde (UBS) local.</p>
+
+            <p>
+                <strong>Localidade:</strong>
+                Bairro Vorazinho,
+                Nova Prata do Iguaçu - PR
+            </p>
+
+            <p>
+                <strong>Objetivo:</strong>
+                Mapear e estratificar famílias por critérios de
+                vulnerabilidade e risco à saúde, permitindo um
+                planejamento eficiente das ações da UBS local.
+            </p>
+
         </section>
 
         <hr>
 
         <section class="map-section">
-            <h2>Mapa Interativo de Estratificação de Risco</h2>
-            <p class="instructions">Instruções: Clique em qualquer local do mapa para adicionar uma residência ou ponto de referência do bairro. Para remover, clique sobre ele e selecione "Remover".</p>
-            
+
+            <h2>
+                Mapa Interativo de
+                Estratificação de Risco
+            </h2>
+
+            <p class="instructions">
+
+                Clique no mapa para adicionar
+                residências ou pontos do bairro.
+
+                <br><br>
+
+                <strong>
+                    UBS/ESF, Academia Terceira Idade,
+                    Igreja, Creche, Escola e
+                    Cemitério são pontos fixos
+                    e não podem ser removidos.
+                </strong>
+
+            </p>
+
             <div class="map-wrapper">
+
                 <div id="map"></div>
 
                 <div class="map-controls">
-                    <h3>Legenda de Riscos e Pontos</h3>
-                    <div class="legend-item"><span class="box verde"></span> Risco Menor (Baixo)</div>
-                    <div class="legend-item"><span class="box amarelo"></span> Risco Médio</div>
-                    <div class="legend-item"><span class="box vermelho"></span> Risco Máximo (Alto)</div>
-                    <div class="legend-item"><span class="box azul"></span> UBS / ESF (Postinho)</div>
-                    
+
+                    <h3>
+                        Legenda de Riscos
+                        e Pontos
+                    </h3>
+
+                    <div class="legend-item">
+                        <span class="box verde"></span>
+                        Risco Menor (Baixo)
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box amarelo"></span>
+                        Risco Médio
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box vermelho"></span>
+                        Risco Máximo (Alto)
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box azul"></span>
+                        UBS / ESF 
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box rosa"></span>
+                        Academia Terceira Idade
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box laranja"></span>
+                        Igreja Pentecostal
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box roxo"></span>
+                        Creche Municipal
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box ciano"></span>
+                        Escola Municipal
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="box cinza"></span>
+                        Cemitério
+                    </div>
+
                     <hr>
-                    
+
                     <h3>Adicionar Marcador</h3>
-                    <p class="small-text">Clique no mapa para ativar o formulário de cadastro.</p>
-                    <div id="form-cadastro" class="hidden">
-                        <label for="numero-casa">Nome da Família / Identificação:</label>
-                        <input type="text" id="numero-casa" placeholder="Ex: Casa 45 ou UBS Central">
-                        
-                        <label for="select-risco">Categoria / Grau de Risco:</label>
+
+                    <p class="small-text">
+                        Clique no mapa para ativar
+                        o formulário.
+                    </p>
+
+                    <div
+                        id="form-cadastro"
+                        class="hidden"
+                    >
+
+                        <label for="numero-casa">
+                            Nome da Família /
+                            Identificação:
+                        </label>
+
+                        <input
+                            type="text"
+                            id="numero-casa"
+                            placeholder="Ex: Família Souza ou Cemitério Municipal"
+                        >
+
+                        <label for="select-risco">
+                            Categoria /
+                            Grau de Risco:
+                        </label>
+
                         <select id="select-risco">
-                            <option value="verde">Risco Menor (Verde)</option>
-                            <option value="amarelo">Risco Médio (Amarelo)</option>
-                            <option value="vermelho">Risco Máximo (Vermelho)</option>
-                            <option value="ubs">UBS / ESF (Postinho)</option>
+
+                            <option value="verde">
+                                Risco Menor (Verde)
+                            </option>
+
+                            <option value="amarelo">
+                                Risco Médio (Amarelo)
+                            </option>
+
+                            <option value="vermelho">
+                                Risco Máximo (Vermelho)
+                            </option>
+
+                            <option value="ubs">
+                                UBS / ESF (Postinho)
+                            </option>
+
+                            <option value="academia">
+                                Academia Terceira Idade
+                            </option>
+
+                            <option value="igreja">
+                                Igreja
+                            </option>
+
+                            <option value="creche">
+                                Creche
+                            </option>
+
+                            <option value="escola">
+                                Escola
+                            </option>
+
+                            <option value="cemiterio">
+                                Cemitério
+                            </option>
+
                         </select>
-                        
-                        <label for="obs-casa">Observações (Patologias, Detalhes da Unidade, etc):</label>
-                        <textarea id="obs-casa" rows="3" placeholder="Ex: Informações sobre moradores ou horários do postinho..."></textarea>
-                        
-                        <button id="btn-salvar">Salvar no Mapa</button>
+
+                        <label for="obs-casa">
+                            Observações:
+                        </label>
+
+                        <textarea
+                            id="obs-casa"
+                            rows="3"
+                            placeholder="Ex: Informações adicionais..."
+                        ></textarea>
+
+                        <button id="btn-salvar">
+                            Salvar no Mapa
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -82,10 +269,21 @@
     </main>
 
     <footer class="main-footer">
-        <p>&copy; 2026 - Faculdade de Enfermagem | Desenvolvimento Prático de Territorialização</p>
+
+        <p>
+            &copy; 2026 -
+            UNIVERSIDADE PARANAENSE – UNIPAR
+UNIDADE UNIVERSITÁRIA DE FRANCISCO BELTRÃO
+CURSO DE GRADUAÇÃO DE ENFERMAGEM
+            Desenvolvimento Prático
+            de Territorialização
+        </p>
+
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <script src="script.js"></script>
+
 </body>
 </html>
