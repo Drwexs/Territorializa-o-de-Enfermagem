@@ -1,17 +1,52 @@
 // ======================================================
-// CONFIGURAÇÃO INICIAL DO MAPA (Visão Geral do Bairro Vorazinho)
+// VERIFICAÇÃO DE NAVEGADOR COM RECOMENDAÇÃO AMIGÁVEL
+// ======================================================
+(function verificarNavegadorRecomendado() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const ehDispositivoMovel = /iphone|ipad|ipod|android|blackberry|iemobile|kindle|opera mini|silk/.test(userAgent);
+    
+    const ehChrome = userAgent.includes('chrome') || userAgent.includes('crios');
+    const ehSafari = userAgent.includes('safari') && !ehChrome;
+    const ehEdge = userAgent.includes('edg');
+    const ehOpera = userAgent.includes('opr') || userAgent.includes('opera');
+
+    let precisaMostrarAviso = false;
+
+    if (ehDispositivoMovel) {
+        if (!ehSafari) precisaMostrarAviso = true;
+    } else {
+        if (!ehChrome || ehEdge || ehOpera) precisaMostrarAviso = true;
+    }
+
+    if (precisaMostrarAviso) {
+        // Exibe o aviso caso o navegador não seja o 100% ideal
+        const telaAviso = document.getElementById('bloqueio-navegador');
+        if (telaAviso) {
+            telaAviso.style.setProperty('display', 'flex', 'important');
+            telaAviso.classList.remove('hidden');
+        } else {
+            // Garante a exibição mesmo se o HTML atrasar um milissegundo para carregar
+            window.addEventListener('DOMContentLoaded', () => {
+                const divAviso = document.getElementById('bloqueio-navegador');
+                if (divAviso) {
+                    divAviso.style.setProperty('display', 'flex', 'important');
+                    divAviso.classList.remove('hidden');
+                }
+            });
+        }
+    }
+})();
+
+// ======================================================
+// CONFIGURAÇÃO INICIAL DO MAPA
 // ======================================================
 
 const lat = -25.620417;
 const lng = -53.343028;
 
-// Mudamos o zoom de 18 para 16 para abrir direto na visão geral do bairro
 const map = L.map('map').setView([lat, lng], 16);
 
-// ======================================================
 // MAPA SATÉLITE
-// ======================================================
-
 L.tileLayer(
     'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     {
@@ -20,10 +55,7 @@ L.tileLayer(
     }
 ).addTo(map);
 
-// ======================================================
 // NOMES DAS RUAS
-// ======================================================
-
 L.tileLayer(
     'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
     {
@@ -72,7 +104,6 @@ const iconeEscolaObjeto = L.icon({
     popupAnchor: [0, -42]
 });
 
-// CEMITÉRIO
 const iconeCemiterioObjeto = L.icon({
     iconUrl: 'img/Cemitério.png',
     iconSize: [42, 42],
@@ -80,38 +111,24 @@ const iconeCemiterioObjeto = L.icon({
     popupAnchor: [0, -42]
 });
 
-// ======================================================
-// ELEMENTOS DA INTERFACE
-// ======================================================
-
+// VARIAVEIS DA INTERFACE
 let coordenadaTemporaria = null;
-
 const formCadastro = document.getElementById('form-cadastro');
 const inputNumero = document.getElementById('numero-casa');
 const selectRisco = document.getElementById('select-risco');
 const txtObs = document.getElementById('obs-casa');
 const btnSalvar = document.getElementById('btn-salvar');
 
-// ======================================================
-// STORAGE LOCAL
-// ======================================================
-
-let dadosCasasSalvas =
-JSON.parse(localStorage.getItem('dadosTerritorializacao')) || [];
-
+// LOCALSTORAGE
+let dadosCasasSalvas = JSON.parse(localStorage.getItem('dadosTerritorializacao')) || [];
 let marcadoresAtivos = {};
 
 // ======================================================
-// CRIAR MARCADORES
+// FUNÇÃO DE RENDERIZAÇÃO DE MARCADORES
 // ======================================================
 
 function criarMarcadorNoMapa(casaObj) {
-
     let marker;
-
-    // ==========================================
-    // PONTOS FIXOS (UBS, ESCOLAS, ETC)
-    // ==========================================
 
     if (
         casaObj.risco === 'ubs' ||
@@ -121,13 +138,11 @@ function criarMarcadorNoMapa(casaObj) {
         casaObj.risco === 'escola' ||
         casaObj.risco === 'cemiterio'
     ) {
-
         const ehUBS = casaObj.risco === 'ubs';
         const ehAcademia = casaObj.risco === 'academia';
         const ehIgreja = casaObj.risco === 'igreja';
         const ehCreche = casaObj.risco === 'creche';
         const ehEscola = casaObj.risco === 'escola';
-        const ehCemiterio = casaObj.risco === 'cemiterio';
 
         const corTexto =
             ehUBS ? '#1565c0' :
@@ -153,36 +168,17 @@ function criarMarcadorNoMapa(casaObj) {
             ehEscola ? iconeEscolaObjeto :
             iconeCemiterioObjeto;
 
-        marker = L.marker([casaObj.lat, casaObj.lng], {
-            icon: icone
-        }).addTo(map);
+        marker = L.marker([casaObj.lat, casaObj.lng], { icon: icone }).addTo(map);
 
         marker.bindPopup(`
             <div style="font-family:sans-serif;min-width:180px;">
                 <h4 style="margin:0 0 8px 0;">${casaObj.numero}</h4>
-                <p style="margin:0;font-weight:bold;color:${corTexto};">
-                    ${titulo}
-                </p>
-
-                ${casaObj.observacao ? `
-                    <p style="margin-top:8px;color:#555;">
-                        <strong>Obs:</strong> ${casaObj.observacao}
-                    </p>` : ''}
-                
-                <button class="btn-remover"
-                    onclick="deletarCasa('${casaObj.id}')">
-                    Remover
-                </button>
+                <p style="margin:0;font-weight:bold;color:${corTexto};">${titulo}</p>
+                ${casaObj.observacao ? `<p style="margin-top:8px;color:#555;"><strong>Obs:</strong> ${casaObj.observacao}</p>` : ''}
+                <button class="btn-remover" onclick="deletarCasa('${casaObj.id}')">Remover</button>
             </div>
         `);
-    }
-
-    // ==========================================
-    // RISCOS FAMILIARES
-    // ==========================================
-
-    else {
-
+    } else {
         let corMarcador = '#2e7d32';
         let classificacao = 'Risco Menor';
 
@@ -190,7 +186,6 @@ function criarMarcadorNoMapa(casaObj) {
             corMarcador = '#f9a825';
             classificacao = 'Risco Médio';
         }
-
         if (casaObj.risco === 'vermelho') {
             corMarcador = '#d32f2f';
             classificacao = 'Risco Máximo';
@@ -207,18 +202,9 @@ function criarMarcadorNoMapa(casaObj) {
         marker.bindPopup(`
             <div style="font-family:sans-serif;min-width:180px;">
                 <h4>${casaObj.numero}</h4>
-                <p style="font-weight:bold;color:${corMarcador};">
-                    ${classificacao}
-                </p>
-
-                ${casaObj.observacao ? `
-                    <p><strong>Obs:</strong> ${casaObj.observacao}</p>
-                ` : ''}
-
-                <button class="btn-remover"
-                    onclick="deletarCasa('${casaObj.id}')">
-                    Remover
-                </button>
+                <p style="font-weight:bold;color:${corMarcador};">${classificacao}</p>
+                ${casaObj.observacao ? `<p><strong>Obs:</strong> ${casaObj.observacao}</p>` : ''}
+                <button class="btn-remover" onclick="deletarCasa('${casaObj.id}')">Remover</button>
             </div>
         `);
     }
@@ -226,42 +212,24 @@ function criarMarcadorNoMapa(casaObj) {
     marcadoresAtivos[casaObj.id] = marker;
 }
 
-// ======================================================
-// CARREGAR SALVOS
-// ======================================================
+// CARREGAR REGISTROS INICIAIS
+dadosCasasSalvas.forEach(casa => criarMarcadorNoMapa(casa));
 
-dadosCasasSalvas.forEach(casa => {
-    criarMarcadorNoMapa(casa);
-});
-
-// ======================================================
-// CLICK NO MAPA
-// ======================================================
-
+// EVENTO DE CLIQUE NO MAPA
 map.on('click', function(e) {
-
     coordenadaTemporaria = e.latlng;
-
     formCadastro.classList.remove('hidden');
-
     inputNumero.value = '';
     txtObs.value = '';
-
     inputNumero.focus();
 
     if (window.innerWidth < 992) {
-        formCadastro.scrollIntoView({
-            behavior: 'smooth'
-        });
+        formCadastro.scrollIntoView({ behavior: 'smooth' });
     }
 });
 
-// ======================================================
-// SALVAR MARCADOR
-// ======================================================
-
+// SALVAR REGISTRO
 btnSalvar.addEventListener('click', function() {
-
     if (!coordenadaTemporaria) {
         alert('Clique no mapa antes de cadastrar.');
         return;
@@ -286,27 +254,15 @@ btnSalvar.addEventListener('click', function() {
     };
 
     dadosCasasSalvas.push(novaCasa);
-
-    localStorage.setItem(
-        'dadosTerritorializacao',
-        JSON.stringify(dadosCasasSalvas)
-    );
-
+    localStorage.setItem('dadosTerritorializacao', JSON.stringify(dadosCasasSalvas));
     criarMarcadorNoMapa(novaCasa);
-
     formCadastro.classList.add('hidden');
-
     coordenadaTemporaria = null;
 });
 
-// ======================================================
-// REMOVER MARCADOR (TRAVA DE SEGURANÇA TOTALMENTE REMOVIDA)
-// ======================================================
-
+// DELETAR MARCADOR
 window.deletarCasa = function(id) {
-
     const confirmar = confirm('Deseja remover este registro?');
-
     if (!confirmar) return;
 
     if (marcadoresAtivos[id]) {
@@ -315,9 +271,61 @@ window.deletarCasa = function(id) {
     }
 
     dadosCasasSalvas = dadosCasasSalvas.filter(casa => casa.id !== id);
-
-    localStorage.setItem(
-        'dadosTerritorializacao',
-        JSON.stringify(dadosCasasSalvas)
-    );
+    localStorage.setItem('dadosTerritorializacao', JSON.stringify(dadosCasasSalvas));
 };
+
+// ======================================================
+// IMPORTAÇÃO / EXPORTAÇÃO (SINC)
+// ======================================================
+
+document.getElementById('btn-exportar').addEventListener('click', function() {
+    if (dadosCasasSalvas.length === 0) {
+        alert("Não há dados cadastrados neste aparelho para exportar.");
+        return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosCasasSalvas));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "mapa_territorializacao_dados.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+});
+
+document.getElementById('btn-importar').addEventListener('click', function() {
+    document.getElementById('input-file').click();
+});
+
+document.getElementById('input-file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const dadosImportados = JSON.parse(e.target.result);
+            if (Array.isArray(dadosImportados)) {
+                const idsExistentes = dadosCasasSalvas.map(casa => casa.id);
+                
+                dadosImportados.forEach(casaImportada => {
+                    if (!idsExistentes.includes(casaImportada.id)) {
+                        dadosCasasSalvas.push(casaImportada);
+                    }
+                });
+
+                localStorage.setItem('dadosTerritorializacao', JSON.stringify(dadosCasasSalvas));
+                
+                for (let id in marcadoresAtivos) { map.removeLayer(marcadoresAtivos[id]); }
+                marcadoresAtivos = {};
+                dadosCasasSalvas.forEach(casa => criarMarcadorNoMapa(casa));
+
+                alert("Dados integrados com sucesso! O mapa foi updated.");
+            } else {
+                alert("O arquivo selecionado é inválido.");
+            }
+        } catch (err) {
+            alert("Erro ao processar o arquivo de dados.");
+        }
+    };
+    reader.readAsText(file);
+});
