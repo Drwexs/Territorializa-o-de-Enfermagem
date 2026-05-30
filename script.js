@@ -72,7 +72,7 @@ const iconeEscolaObjeto = L.icon({
     popupAnchor: [0, -42]
 });
 
-// 🆕 CEMITÉRIO
+// CEMITÉRIO
 const iconeCemiterioObjeto = L.icon({
     iconUrl: 'img/Cemitério.png',
     iconSize: [42, 42],
@@ -168,6 +168,11 @@ function criarMarcadorNoMapa(casaObj) {
                     <p style="margin-top:8px;color:#555;">
                         <strong>Obs:</strong> ${casaObj.observacao}
                     </p>` : ''}
+                
+                <button class="btn-remover"
+                    onclick="deletarCasa('${casaObj.id}')">
+                    Remover
+                </button>
             </div>
         `);
     }
@@ -295,28 +300,10 @@ btnSalvar.addEventListener('click', function() {
 });
 
 // ======================================================
-// REMOVER MARCADOR
+// REMOVER MARCADOR (TRAVA DE SEGURANÇA TOTALMENTE REMOVIDA)
 // ======================================================
 
 window.deletarCasa = function(id) {
-
-    const casa = dadosCasasSalvas.find(item => item.id === id);
-
-    // NÃO REMOVE FIXOS
-    if (
-        casa &&
-        (
-            casa.risco === 'ubs' ||
-            casa.risco === 'academia' ||
-            casa.risco === 'igreja' ||
-            casa.risco === 'creche' ||
-            casa.risco === 'escola' ||
-            casa.risco === 'cemiterio'
-        )
-    ) {
-        alert('Este ponto é fixo e não pode ser removido.');
-        return;
-    }
 
     const confirmar = confirm('Deseja remover este registro?');
 
